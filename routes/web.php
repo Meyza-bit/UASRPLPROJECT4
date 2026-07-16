@@ -8,6 +8,7 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\PesanController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\RiwayatController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
@@ -48,4 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pembayaran/{penyewaan}/upload', [PembayaranController::class, 'upload'])->name('pembayaran.upload');
     Route::get('/pembayaran/{penyewaan}/berhasil', [PembayaranController::class, 'berhasil'])->name('pembayaran.berhasil');
     Route::post('/pembayaran/{penyewaan}/batal', [PembayaranController::class, 'batal'])->name('pembayaran.batal');
+
+    Route::get('/riwayat', [RiwayatController::class, 'index'])->name('riwayat.index');
+    Route::get('/riwayat/{penyewaan}', [RiwayatController::class, 'show'])->name('riwayat.show');
 });

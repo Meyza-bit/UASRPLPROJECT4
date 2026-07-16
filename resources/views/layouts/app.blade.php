@@ -36,7 +36,7 @@
                         'Beranda' => url('/'),
                         'Katalog' => route('katalog.index'),
                         'Pesan'   => route('pesan.index'),
-                        'Riwayat' => '#',
+                        'Riwayat' => route('riwayat.index'),
                     ];
                 @endphp
 
