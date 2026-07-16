@@ -53,14 +53,24 @@
 
             {{-- Kanan: beda kalau sudah login --}}
             @auth
-                <a href="#" class="flex items-center gap-2 shrink-0">
-                    <span class="text-sm font-medium text-[#7B1E1E]">Profil</span>
-                    <span class="w-8 h-8 rounded-full bg-[#E5A82E] flex items-center justify-center text-[#7B1E1E] text-xs font-bold">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                    </span>
-                </a>
+                <div class="flex items-center gap-4 shrink-0">
+                    <a href="#" class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-[#7B1E1E]">Profil</span>
+                        <span class="w-8 h-8 rounded-full bg-[#E5A82E] flex items-center justify-center text-[#7B1E1E] text-xs font-bold">
+                            {{ strtoupper(substr(auth()->user()->nama_tampil, 0, 1)) }}
+                        </span>
+                    </a>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="text-xs text-[#8A7B6B] hover:text-[#7B1E1E]">
+                            Keluar
+                        </button>
+                    </form>
+                </div>
             @else
-                <a href="#" class="shrink-0 bg-[#7B1E1E] text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-[#621818] transition">
+                <a href="{{ route('login') }}"
+                   class="shrink-0 bg-[#7B1E1E] text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-[#621818] transition">
                     Login / Daftar
                 </a>
             @endauth
@@ -70,6 +80,13 @@
 
     {{-- ================= ISI HALAMAN ================= --}}
     <main class="px-6 pb-12">
+        {{-- Pesan sukses, misal setelah daftar akun --}}
+        @if (session('sukses'))
+            <div class="max-w-6xl mx-auto mb-4 bg-[#DCF3E5] text-[#1E6B45] text-sm rounded-xl px-5 py-3">
+                {{ session('sukses') }}
+            </div>
+        @endif
+
         @yield('content')
     </main>
 
