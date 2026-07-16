@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\PesanController;
+use App\Http\Controllers\ProfilController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
@@ -37,4 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/pesan/hapus', [PesanController::class, 'hapus'])->name('pesan.hapus');
     Route::post('/pesan/jadwal', [PesanController::class, 'jadwal'])->name('pesan.jadwal');
     Route::post('/pesan/simpan', [PesanController::class, 'simpan'])->name('pesan.simpan');
+
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+    Route::patch('/profil', [ProfilController::class, 'update'])->name('profil.update');
+    Route::patch('/profil/password', [ProfilController::class, 'gantiPassword'])->name('profil.password');
 });

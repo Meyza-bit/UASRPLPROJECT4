@@ -54,7 +54,7 @@
             {{-- Kanan: beda kalau sudah login --}}
             @auth
                 <div class="flex items-center gap-4 shrink-0">
-                    <a href="#" class="flex items-center gap-2">
+                    <a href="{{ route('profil.index') }}" class="flex items-center gap-2">
                         <span class="text-sm font-medium text-[#7B1E1E]">Profil</span>
                         <span class="w-8 h-8 rounded-full bg-[#E5A82E] flex items-center justify-center text-[#7B1E1E] text-xs font-bold">
                             {{ strtoupper(substr(auth()->user()->nama_tampil, 0, 1)) }}
