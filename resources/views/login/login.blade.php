@@ -71,7 +71,7 @@
 
             {{-- Lupa password --}}
             <div class="text-right">
-                <a href="#" class="text-sm text-[#5C4A3A] hover:text-[#7B1E1E]">Lupa Password?</a>
+                <a href="{{ route('password.request') }}" class="text-sm text-[#5C4A3A] hover:text-[#7B1E1E]">Lupa Password?</a>
             </div>
 
             {{-- Tombol masuk --}}
