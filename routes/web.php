@@ -4,11 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\PesanController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
 
 // Halaman login & daftar (cuma buat yang BELUM login)
@@ -30,3 +29,12 @@ Route::middleware('guest')->group(function () {
 Route::post('/keluar', [LoginController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
+
+// Halaman pesan (cuma buat yang SUDAH login)
+Route::middleware('auth')->group(function () {
+    Route::get('/pesan', [PesanController::class, 'index'])->name('pesan.index');
+    Route::post('/pesan/tambah', [PesanController::class, 'tambah'])->name('pesan.tambah');
+    Route::post('/pesan/hapus', [PesanController::class, 'hapus'])->name('pesan.hapus');
+    Route::post('/pesan/jadwal', [PesanController::class, 'jadwal'])->name('pesan.jadwal');
+    Route::post('/pesan/simpan', [PesanController::class, 'simpan'])->name('pesan.simpan');
+});

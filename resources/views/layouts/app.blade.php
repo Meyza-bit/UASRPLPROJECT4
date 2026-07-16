@@ -35,7 +35,7 @@
                     $menu = [
                         'Beranda' => url('/'),
                         'Katalog' => route('katalog.index'),
-                        'Pesan'   => '#',
+                        'Pesan'   => route('pesan.index'),
                         'Riwayat' => '#',
                     ];
                 @endphp

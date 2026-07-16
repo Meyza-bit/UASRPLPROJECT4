@@ -15,16 +15,18 @@ class Sepeda extends Model
     protected $fillable = [
         'kode',
         'nama',
+        'tipe',
         'kategori',
+        'stok',
         'harga_per_jam',
         'harga_3jam',
         'harga_6jam',
         'foto',
-        'status',
         'is_aktif',
     ];
 
     protected $casts = [
+        'stok'          => 'integer',
         'harga_per_jam' => 'decimal:2',
         'harga_3jam'    => 'decimal:2',
         'harga_6jam'    => 'decimal:2',
@@ -33,7 +35,7 @@ class Sepeda extends Model
 
     // --- Scope: dipakai buat filter di katalog ---
 
-    // Sepeda yang tampil di katalog customer (yang non-aktif disembunyikan)
+    // Sepeda yang tampil di katalog customer (yang non-aktif disembunyikan admin)
     public function scopeAktif($query)
     {
         return $query->where('is_aktif', true);
@@ -47,17 +49,30 @@ class Sepeda extends Model
         return $query; // "semua" -> nggak difilter
     }
 
+    // Cuma yang stoknya masih ada. Dipakai di halaman Pesan.
+    public function scopeAdaStok($query)
+    {
+        return $query->where('stok', '>', 0);
+    }
+
     // --- Helper ---
+
+    // Ketersediaan sekarang dilihat dari stok, bukan kolom status.
+    public function getTersediaAttribute(): bool
+    {
+        return $this->stok > 0;
+    }
 
     // Badge di katalog: "Tersedia" / "Habis"
     public function getBadgeAttribute(): string
     {
-        return $this->status === 'tersedia' ? 'Tersedia' : 'Habis';
+        return $this->tersedia ? 'Tersedia' : 'Habis';
     }
 
-    public function getTersediaAttribute(): bool
+    // Teks di halaman Pesan: "2 unit tersedia"
+    public function getTeksStokAttribute(): string
     {
-        return $this->status === 'tersedia';
+        return $this->stok . ' unit tersedia';
     }
 
     // Ambil harga sesuai durasi sewa (1 / 3 / 6 jam)
