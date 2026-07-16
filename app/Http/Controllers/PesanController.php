@@ -143,9 +143,7 @@ class PesanController extends Controller
         // Keranjang dikosongkan setelah jadi pesanan
         session()->forget('sewa.keranjang');
 
-        return redirect()
-            ->route('pesan.index')
-            ->with('sukses', "Pesanan {$penyewaan->kode} berhasil dibuat. Silakan lanjut ke pembayaran.");
+       return redirect()->route('pembayaran.show', $penyewaan);
     }
 
     // ================= FUNGSI BANTU =================

@@ -7,6 +7,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\PesanController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\PembayaranController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
@@ -31,7 +32,7 @@ Route::post('/keluar', [LoginController::class, 'logout'])
     ->middleware('auth')
     ->name('logout');
 
-// Halaman pesan (cuma buat yang SUDAH login)
+// Halaman pesan, profil, pembayaran (cuma buat yang SUDAH login)
 Route::middleware('auth')->group(function () {
     Route::get('/pesan', [PesanController::class, 'index'])->name('pesan.index');
     Route::post('/pesan/tambah', [PesanController::class, 'tambah'])->name('pesan.tambah');
@@ -42,4 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
     Route::patch('/profil', [ProfilController::class, 'update'])->name('profil.update');
     Route::patch('/profil/password', [ProfilController::class, 'gantiPassword'])->name('profil.password');
+
+    Route::get('/pembayaran/{penyewaan}', [PembayaranController::class, 'show'])->name('pembayaran.show');
+    Route::post('/pembayaran/{penyewaan}/upload', [PembayaranController::class, 'upload'])->name('pembayaran.upload');
+    Route::get('/pembayaran/{penyewaan}/berhasil', [PembayaranController::class, 'berhasil'])->name('pembayaran.berhasil');
+    Route::post('/pembayaran/{penyewaan}/batal', [PembayaranController::class, 'batal'])->name('pembayaran.batal');
 });
