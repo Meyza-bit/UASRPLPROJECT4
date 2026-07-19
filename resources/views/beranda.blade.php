@@ -68,27 +68,6 @@
 
     </section>
 
-    {{-- ================= PROMO & SERVIS ================= --}}
-    <section class="grid md:grid-cols-5 gap-6">
-
-        {{-- Promo member --}}
-        <div class="md:col-span-3 bg-[#FCF2DA] rounded-3xl p-7 flex flex-col sm:flex-row gap-6 items-center">
-            <div class="flex-1">
-                <p class="text-[10px] font-bold tracking-widest text-[#7B1E1E]">SPECIAL OFFER</p>
-                <h2 class="mt-3 text-xl font-bold text-[#2B1E1E] leading-snug">
-                    Member Exclusive: Sewa 3 Hari, Gratis 1 Hari
-                </h2>
-                <p class="mt-3 text-sm text-[#5C4A3A] leading-relaxed">
-                    Nikmati perjalanan lebih jauh dengan paket sewa mingguan kami.
-                    Berlaku untuk semua jenis sepeda urban.
-                </p>
-            </div>
-
-            <div class="w-full sm:w-44 h-32 rounded-xl bg-[#EDE4D2] flex items-center justify-center shrink-0">
-                <span class="text-[#B9A88F] text-xs">Gambar promo</span>
-            </div>
-        </div>
-
         {{-- Butuh servis --}}
         <div class="md:col-span-2 bg-[#7B1E1E] rounded-3xl p-7 relative overflow-hidden">
             <svg class="absolute -right-6 -bottom-6 w-40 h-40 text-white opacity-5" fill="currentColor" viewBox="0 0 24 24">
@@ -98,7 +77,7 @@
             <div class="relative">
                 <h2 class="text-xl font-bold text-white">Butuh Servis?</h2>
                 <p class="mt-3 text-sm text-[#F0D9D9] leading-relaxed">
-                    Montir ahli kami akan menjemput sepeda Anda di rumah.
+                    Montir ahli kami akan memperbaiki sepeda Anda.
                 </p>
 
                 <a href="#" class="inline-flex items-center gap-2 mt-6 text-white text-sm font-medium

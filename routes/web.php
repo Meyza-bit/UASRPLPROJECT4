@@ -16,9 +16,11 @@ use App\Http\Controllers\Admin\PesananMasukController;
 use App\Http\Controllers\Admin\PengembalianController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\KatalogServisController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
+Route::get('/katalog/servis', [KatalogServisController::class, 'index'])->name('katalog.servis.index');
 
 // Halaman login & daftar (cuma buat yang BELUM login)
 Route::middleware('guest')->group(function () {
@@ -47,6 +49,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/pesan/hapus', [PesanController::class, 'hapus'])->name('pesan.hapus');
     Route::post('/pesan/jadwal', [PesanController::class, 'jadwal'])->name('pesan.jadwal');
     Route::post('/pesan/simpan', [PesanController::class, 'simpan'])->name('pesan.simpan');
+    Route::post('/katalog/servis/tambah', [KatalogServisController::class, 'tambah'])->name('katalog.servis.tambah');
+    Route::post('/katalog/servis/hapus', [KatalogServisController::class, 'hapus'])->name('katalog.servis.hapus');
+    Route::post('/katalog/servis/simpan', [KatalogServisController::class, 'simpan'])->name('katalog.servis.simpan');
 
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
     Route::patch('/profil', [ProfilController::class, 'update'])->name('profil.update');

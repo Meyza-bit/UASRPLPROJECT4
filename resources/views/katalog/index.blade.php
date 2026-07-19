@@ -4,7 +4,20 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto">
+
+    {{-- Tab Katalog Sepeda / Katalog Servis --}}
+    <div class="flex gap-8 border-b border-[#E3D4B0] mb-6 px-2">
+        <span class="pb-3 text-sm font-semibold text-[#7B1E1E] border-b-2 border-[#7B1E1E]">
+            Katalog Sepeda
+        </span>
+        <a href="{{ route('katalog.servis.index') }}"
+           class="pb-3 text-sm text-[#5C4A3A] hover:text-[#7B1E1E]">
+            Katalog Servis
+        </a>
+    </div>
+
     <div class="bg-[#FCF2DA] rounded-3xl p-6 md:p-10">
+        {{-- isi katalog sepeda --}}
 
         {{-- ===== Judul + filter ===== --}}
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-8">
