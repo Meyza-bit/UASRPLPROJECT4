@@ -67,4 +67,41 @@ class PesananServisController extends Controller
         return redirect()->route('pembayaran.servis.show', $pesanan->id)
             ->with('success', 'Pesanan servis berhasil dibuat!');
     }
+
+    /**
+     * Cek apakah jam servis masih dalam jam operasional.
+     * Weekday buka 08.00, weekend buka 06.00. Paling malam 20.00.
+     */
+    private function cekJamServis(string $tanggal, ?string $jam): ?string
+    {
+        if (! $jam) {
+            return null;
+        }
+
+        $hari    = \Carbon\Carbon::parse($tanggal);
+        $jamBuka = $hari->isWeekend() ? '06:00' : '08:00';
+
+        $menit     = $this->keMenit($jam);
+        $menitBuka = $this->keMenit($jamBuka);
+
+        if ($menit < $menitBuka) {
+            $labelHari = $hari->isWeekend() ? 'akhir pekan' : 'hari kerja';
+            return "Servis {$labelHari} baru buka jam " . substr($jamBuka, 0, 5) . '.';
+        }
+
+        if ($menit > $this->keMenit('20:00')) {
+            return 'Pemesanan servis terakhir jam 20.00.';
+        }
+
+        return null;
+    }
+
+    /**
+     * Ubah "20:00" jadi jumlah menit (1200).
+     */
+    private function keMenit(string $jam): int
+    {
+        [$j, $m] = explode(':', substr($jam, 0, 5));
+        return ((int) $j) * 60 + (int) $m;
+    }
 }
