@@ -23,9 +23,9 @@
 
             {{-- Logo --}}
             <a href="{{ url('/') }}" class="flex items-center gap-2 shrink-0">
-                <div class="w-9 h-9 rounded-full bg-[#7B1E1E] flex items-center justify-center text-[#E5A82E] text-[9px] font-bold leading-none text-center">
-                    CB
-                </div>
+                <!-- Panggil file logo.png di sini -->
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Culture Bike" class="w-9 h-9 object-contain rounded-full">
+                
                 <span class="text-xl font-bold text-[#7B1E1E]">Culture Bike</span>
             </a>
 
@@ -33,17 +33,17 @@
             <div class="hidden md:flex items-center gap-8 text-sm font-medium">
                 @php
                     $menu = [
-                        'Beranda' => url('/'),
-                        'Katalog' => route('katalog.index'),
-                        'Pesan'   => route('pesan.index'),
-                        'Riwayat' => route('riwayat.index'),
+                        'Beranda' => ['link' => url('/'), 'pola' => ['beranda']],
+                        'Katalog' => ['link' => route('katalog.index'), 'pola' => ['katalog.*']],
+                        'Pesan'   => ['link' => route('pesan.index'), 'pola' => ['pesan.*', 'servis.*', 'pembayaran.*']],
+                        'Riwayat' => ['link' => route('riwayat.index'), 'pola' => ['riwayat.*']],
                     ];
                 @endphp
 
-                @foreach ($menu as $label => $link)
-                    @php $aktif = request()->url() === $link; @endphp
-                    <a href="{{ $link }}"
-                       class="{{ $aktif
+                @foreach ($menu as $label => $item)
+                    @php $aktif = request()->routeIs($item['pola']); @endphp
+                    <a href="{{ $item['link'] }}"
+                    class="{{ $aktif
                             ? 'text-[#7B1E1E] font-semibold border-b-2 border-[#7B1E1E] pb-0.5'
                             : 'text-[#3A2A2A] hover:text-[#7B1E1E]' }}">
                         {{ $label }}

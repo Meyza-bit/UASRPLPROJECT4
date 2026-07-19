@@ -17,7 +17,7 @@
 
         <h1 class="mt-5 text-3xl font-bold text-[#7B1E1E]">Pembayaran Berhasil!</h1>
         <p class="mt-3 text-sm text-[#5C4A3A]">
-            Terima kasih! Pesananmu sedang kami siapkan.
+            Terima kasih! {{ isset($penyewaan) ? 'Pesananmu' : 'Servismu' }} sedang kami siapkan.
         </p>
 
         {{-- Ringkasan transaksi --}}
@@ -26,8 +26,10 @@
 
             <div class="mt-4 space-y-3 text-sm">
                 <div class="flex justify-between gap-4">
-                    <span class="text-[#8A7B6B]">No. Transaksi</span>
-                    <span class="text-[#7B1E1E] font-semibold">{{ $penyewaan->kode }}</span>
+                    <span class="text-[#8A7B6B]">No. {{ isset($penyewaan) ? 'Transaksi' : 'Pesanan' }}</span>
+                    <span class="text-[#7B1E1E] font-semibold">
+                        {{ isset($penyewaan) ? $penyewaan->kode : '#' . $pesanan->id }}
+                    </span>
                 </div>
                 <div class="flex justify-between gap-4">
                     <span class="text-[#8A7B6B]">Metode</span>
@@ -35,7 +37,9 @@
                 </div>
                 <div class="flex justify-between gap-4">
                     <span class="text-[#8A7B6B]">Tanggal</span>
-                    <span class="text-[#2B1E1E]">{{ $penyewaan->created_at->translatedFormat('j F Y') }}</span>
+                    <span class="text-[#2B1E1E]">
+                        {{ (isset($penyewaan) ? $penyewaan->created_at : $pesanan->created_at)->translatedFormat('j F Y') }}
+                    </span>
                 </div>
                 <div class="flex justify-between gap-4">
                     <span class="text-[#8A7B6B]">Status</span>

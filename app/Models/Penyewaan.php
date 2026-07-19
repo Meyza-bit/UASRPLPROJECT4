@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Penyewaan extends Model
 {
@@ -42,6 +43,13 @@ class Penyewaan extends Model
     public function detail(): HasMany
     {
         return $this->hasMany(PenyewaanDetail::class);
+    }
+
+    // Data pembayaran buat pesanan sewa ini
+    public function pembayaran(): HasOne
+    {
+        return $this->hasOne(Pembayaran::class, 'pesanan_id')
+            ->where('jenis_pesanan', 'sewa');
     }
 
     // --- Helper ---

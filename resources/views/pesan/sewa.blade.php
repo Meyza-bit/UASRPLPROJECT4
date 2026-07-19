@@ -26,7 +26,7 @@
             <span class="bg-[#E5A82E] text-[#5C3A0A] text-sm font-semibold px-6 py-2.5 rounded-full">
                 Sewa Sepeda
             </span>
-            <a href="#" class="text-[#A89478] text-sm px-6 py-2.5 rounded-full hover:text-[#7B1E1E]">
+            <a href="{{ route('servis.create') }}" class="text-[#A89478] text-sm px-6 py-2.5 rounded-full hover:text-[#7B1E1E]">
                 Servis Sepeda
             </a>
         </div>

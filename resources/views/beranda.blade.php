@@ -38,22 +38,13 @@
 
             {{-- Kanan: gambar --}}
             <div class="bg-white rounded-2xl aspect-square flex items-center justify-center overflow-hidden">
-                {{-- Ganti dengan gambar asli:
-                     <img src="{{ asset('images/hero-sepeda.png') }}" alt="Pesepeda" class="w-full h-full object-cover"> --}}
-                <div class="text-center text-[#B9A88F] text-sm">
-                    <svg class="w-16 h-16 mx-auto mb-3 opacity-40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <circle cx="5.5" cy="17.5" r="3.5"/>
-                        <circle cx="18.5" cy="17.5" r="3.5"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.5 17.5l4-9h5l4 9M9.5 8.5h6"/>
-                    </svg>
-                    Gambar hero
-                </div>
+                <img src="{{ asset('images/bikelogo.png') }}" alt="Culture Bike Hero" class="w-full h-full object-cover">
             </div>
 
-        </div>
+        </div> <!-- Tag penutup kontainer grid atas[cite: 6] -->
 
         {{-- Statistik --}}
-        <div class="mt-12 pt-8 border-t border-[#EADCB8] grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="mt-12 pt-8 border-t border-[#EADCB8] grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             @php
                 $statistik = [
                     ['nilai' => $totalUnit, 'label' => 'UNIT SEPEDA TERSEDIA', 'emas' => true],
@@ -64,11 +55,13 @@
             @endphp
 
             @foreach ($statistik as $s)
-                <div>
-                    <p class="text-4xl font-bold {{ $s['emas'] ? 'text-[#E5A82E]' : 'text-[#2B1E1E]' }}">
+                <div class="flex flex-col items-center justify-center">
+                    <p class="text-3xl md:text-4xl font-bold {{ $s['emas'] ? 'text-[#E5A82E]' : 'text-[#2B1E1E]' }}">
                         {{ $s['nilai'] }}
                     </p>
-                    <p class="mt-1 text-[10px] tracking-widest text-[#8A7B6B]">{{ $s['label'] }}</p>
+                    <p class="mt-1 text-[10px] tracking-widest text-[#8A7B6B] font-medium max-w-[150px]"> 
+                        {{ $s['label'] }}
+                    </p>
                 </div>
             @endforeach
         </div>
@@ -92,15 +85,12 @@
             </div>
 
             <div class="w-full sm:w-44 h-32 rounded-xl bg-[#EDE4D2] flex items-center justify-center shrink-0">
-                {{-- Ganti dengan gambar asli:
-                     <img src="{{ asset('images/promo-member.png') }}" alt="Promo" class="w-full h-full object-cover rounded-xl"> --}}
                 <span class="text-[#B9A88F] text-xs">Gambar promo</span>
             </div>
         </div>
 
         {{-- Butuh servis --}}
         <div class="md:col-span-2 bg-[#7B1E1E] rounded-3xl p-7 relative overflow-hidden">
-            {{-- Ikon kunci pas samar di latar --}}
             <svg class="absolute -right-6 -bottom-6 w-40 h-40 text-white opacity-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
             </svg>

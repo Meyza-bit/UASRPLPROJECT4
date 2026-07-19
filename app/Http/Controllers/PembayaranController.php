@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pembayaran;
 use App\Models\Penyewaan;
+use App\Models\PesananServis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -126,6 +127,97 @@ class PembayaranController extends Controller
             ->with('sukses', "Pesanan {$penyewaan->kode} dibatalkan.");
     }
 
+    // =========================================================
+    // Method di bawah ini punya Kia — modul pembayaran servis
+    // =========================================================
+
+    /**
+     * Halaman pembayaran sebuah pesanan servis.
+     */
+    public function showServis(PesananServis $pesananServis)
+    {
+        $this->pastikanMilikSendiriServis($pesananServis);
+
+        $pesananServis->load('detail');
+
+        // Data pembayaran dibuat sekali saja, sekalian dengan batas waktunya.
+        $pembayaran = Pembayaran::firstOrCreate(
+            [
+                'jenis_pesanan' => 'servis',
+                'pesanan_id'    => $pesananServis->id,
+            ],
+            [
+                'metode_bayar' => 'QRIS',
+                'jumlah'       => $pesananServis->total_pembayaran,
+                'status'       => 'menunggu',
+                'batas_waktu'  => $pesananServis->created_at->addDay(),
+            ]
+        );
+
+        return view('pembayaran.servis', [
+            'pesanan'    => $pesananServis,
+            'pembayaran' => $pembayaran,
+        ]);
+    }
+
+    /**
+     * Customer mengunggah bukti pembayaran servis.
+     */
+    public function uploadServis(Request $request, PesananServis $pesananServis)
+    {
+        $this->pastikanMilikSendiriServis($pesananServis);
+
+        $request->validate([
+            'bukti_bayar' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
+        ], [
+            'bukti_bayar.required' => 'Bukti pembayaran wajib diunggah.',
+            'bukti_bayar.mimes'    => 'File harus berformat JPG, PNG, atau PDF.',
+            'bukti_bayar.max'      => 'Ukuran file maksimal 5MB.',
+        ]);
+
+        $pembayaran = Pembayaran::servis()->where('pesanan_id', $pesananServis->id)->firstOrFail();
+
+        if ($pembayaran->kadaluarsa) {
+            return back()->withErrors(['bukti_bayar' => 'Batas waktu pembayaran sudah lewat.']);
+        }
+
+        DB::transaction(function () use ($request, $pembayaran, $pesananServis) {
+
+            if ($pembayaran->bukti_bayar) {
+                Storage::disk('public')->delete($pembayaran->bukti_bayar);
+            }
+
+            $path = $request->file('bukti_bayar')->store('bukti-bayar', 'public');
+
+            $pembayaran->update([
+                'bukti_bayar' => $path,
+                'status'      => 'menunggu',
+            ]);
+
+            // Giliran admin yang memeriksa
+            $pesananServis->update(['status' => 'proses']);
+        });
+
+        return redirect()
+            ->route('pembayaran.servis.berhasil', $pesananServis->id)
+            ->with('success', 'Bukti pembayaran berhasil diunggah, menunggu verifikasi admin.');
+    }
+
+    /**
+     * Halaman "Pembayaran Berhasil" untuk pesanan servis.
+     */
+    public function berhasilServis(PesananServis $pesananServis)
+    {
+        $this->pastikanMilikSendiriServis($pesananServis);
+
+        $pembayaran = Pembayaran::servis()->where('pesanan_id', $pesananServis->id)->firstOrFail();
+
+        return view('pembayaran.berhasil', [
+            'pesanan'    => $pesananServis,
+            'pembayaran' => $pembayaran,
+        ]);
+    }
+
     /**
      * Pastikan pesanan ini memang milik user yang sedang login.
      * Tanpa ini, orang bisa membuka pembayaran orang lain hanya dengan mengubah angka di URL.
@@ -133,6 +225,16 @@ class PembayaranController extends Controller
     private function pastikanMilikSendiri(Penyewaan $penyewaan): void
     {
         if ($penyewaan->user_id !== auth()->id()) {
+            throw new NotFoundHttpException();
+        }
+    }
+
+    /**
+     * Sama seperti di atas, tapi untuk pesanan servis.
+     */
+    private function pastikanMilikSendiriServis(PesananServis $pesananServis): void
+    {
+        if ($pesananServis->user_id !== auth()->id()) {
             throw new NotFoundHttpException();
         }
     }
