@@ -35,7 +35,9 @@ class PesananServisController extends Controller
 
         // Simpan header + detail dalam 1 transaksi database
         // (biar kalau salah satu gagal, semuanya batal — nggak ada data setengah jalan)
-        DB::transaction(function () use ($request, $biayaAdmin, $totalBayar) {
+        // "return" di dalam DB::transaction() otomatis jadi nilai balik transaction-nya,
+        // jadi $pesanan bisa dipakai lagi di luar closure ini.
+        $pesanan = DB::transaction(function () use ($request, $biayaAdmin, $totalBayar) {
             $pesanan = PesananServis::create([
                 'user_id'          => Auth::id(),
                 'tanggal_jadwal'   => $request->tanggal_jadwal,
@@ -53,9 +55,11 @@ class PesananServisController extends Controller
                     'harga_layanan'     => $item['harga_layanan'],
                 ]);
             }
+
+            return $pesanan;
         });
 
-        return redirect()->route('servis.riwayat')
+        return redirect()->route('pembayaran.servis.show', $pesanan->id)
             ->with('success', 'Pesanan servis berhasil dibuat!');
     }
 }

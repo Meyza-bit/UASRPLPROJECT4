@@ -46,4 +46,18 @@ class User extends Authenticatable
     {
         return $this->name ?: explode('@', $this->email)[0];
     }
+
+    // --- Relasi ---
+
+    // Riwayat sewa milik user ini
+    public function penyewaan()
+    {
+        return $this->hasMany(Penyewaan::class);
+    }
+
+    // Riwayat servis milik user ini
+    public function pesananServis()
+    {
+        return $this->hasMany(PesananServis::class);
+    }
 }

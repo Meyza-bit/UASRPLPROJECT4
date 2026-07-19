@@ -33,11 +33,10 @@ class PesananServis extends Model
         return $this->hasMany(PesananServisDetail::class);
     }
 
-    // Relasi: 1 pesanan servis punya banyak record pembayaran
-    // (biasanya cuma 1, tapi kita pakai hasMany karena tabel pembayaran nggak strict FK)
+    // Relasi: 1 pesanan servis punya 1 data pembayaran
     public function pembayaran()
     {
-        return $this->hasMany(Pembayaran::class, 'id_pesanan')
-                     ->where('jenis_pesanan', 'servis');
+        return $this->hasOne(Pembayaran::class, 'pesanan_id')
+            ->where('jenis_pesanan', 'servis');
     }
 }

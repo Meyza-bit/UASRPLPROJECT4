@@ -10,6 +10,12 @@ use App\Http\Controllers\PesanController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\RiwayatController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\PesananMasukController;
+use App\Http\Controllers\Admin\PengembalianController;
+use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\LaporanController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
 Route::get('/katalog', [KatalogController::class, 'index'])->name('katalog.index');
@@ -60,4 +66,35 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/servis/{pesananServis}/bayar', [PembayaranController::class, 'showServis'])->name('pembayaran.servis.show');
     Route::post('/servis/{pesananServis}/bayar', [PembayaranController::class, 'uploadServis'])->name('pembayaran.servis.store');
+    Route::get('/servis/{pesananServis}/berhasil', [PembayaranController::class, 'berhasilServis'])->name('pembayaran.servis.berhasil');
+});
+
+// Halaman admin (cuma admin yang bisa akses) — punya Kia
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/unit', [UnitController::class, 'index'])->name('unit.index');
+    Route::post('/unit', [UnitController::class, 'store'])->name('unit.store');
+    Route::put('/unit/{sepedum}', [UnitController::class, 'update'])->name('unit.update');
+    Route::delete('/unit/{sepedum}', [UnitController::class, 'destroy'])->name('unit.destroy');
+    Route::patch('/unit/{sepedum}/toggle', [UnitController::class, 'toggleAktif'])->name('unit.toggle');
+
+    Route::get('/pesanan-masuk', [PesananMasukController::class, 'index'])->name('pesanan-masuk.index');
+
+    Route::post('/pesanan-masuk/sewa/{penyewaan}/approve', [PesananMasukController::class, 'approveSewa'])->name('pesanan-masuk.sewa.approve');
+    Route::post('/pesanan-masuk/sewa/{penyewaan}/reject', [PesananMasukController::class, 'rejectSewa'])->name('pesanan-masuk.sewa.reject');
+    Route::post('/pesanan-masuk/sewa/{penyewaan}/selesai', [PesananMasukController::class, 'selesaiSewa'])->name('pesanan-masuk.sewa.selesai');
+
+    Route::post('/pesanan-masuk/servis/{pesananServis}/approve', [PesananMasukController::class, 'approveServis'])->name('pesanan-masuk.servis.approve');
+    Route::post('/pesanan-masuk/servis/{pesananServis}/reject', [PesananMasukController::class, 'rejectServis'])->name('pesanan-masuk.servis.reject');
+    Route::post('/pesanan-masuk/servis/{pesananServis}/selesai', [PesananMasukController::class, 'selesaiServis'])->name('pesanan-masuk.servis.selesai');
+
+    Route::get('/pengembalian', [PengembalianController::class, 'index'])->name('pengembalian.index');
+    Route::post('/pengembalian/{penyewaan}', [PengembalianController::class, 'store'])->name('pengembalian.store');
+
+    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('pengguna.index');
+    Route::get('/pengguna/{pengguna}', [PenggunaController::class, 'show'])->name('pengguna.show');
+
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
 });
