@@ -133,6 +133,7 @@
                         <div>
                             <label for="waktu_jadwal" class="block text-xs text-[#5C4A3A] mb-1.5">Waktu</label>
                             <input type="time" name="waktu_jadwal" id="waktu_jadwal"
+                                   min="08:00" max="20:00"
                                    class="w-full border border-[#E3D4B0] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#7B1E1E]">
                         </div>
                     </div>

@@ -28,6 +28,11 @@ class PesananServisController extends Controller
             'layanan.*.harga_layanan' => 'required|numeric',
         ]);
 
+        // Cek jam operasional servis
+        $error = $this->cekJamServis($request->tanggal_jadwal, $request->waktu_jadwal);
+        if ($error) {
+            return back()->withErrors(['waktu_jadwal' => $error])->withInput();
+        }
         // Hitung total dari semua layanan yang dipilih
         $totalLayanan = collect($request->layanan)->sum('harga_layanan');
         $biayaAdmin   = 0; // sesuaikan kalau ada aturan biaya admin

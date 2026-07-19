@@ -260,5 +260,29 @@
             document.getElementById('form-jadwal').submit();
         });
     });
+    
+    // Kalau jam mulai di atas 22.30, opsi 3 & 6 jam dimatikan
+    function aturDurasi() {
+        const jam    = document.getElementById('jam').value;
+        const durasi = document.getElementById('durasi');
+        if (!jam) return;
+
+        const [j, m] = jam.split(':').map(Number);
+        const menit  = j * 60 + m;
+        const lewat  = menit > (22 * 60 + 30);
+
+        Array.from(durasi.options).forEach(function (opt) {
+            if (opt.value === '3' || opt.value === '6') {
+                opt.disabled = lewat;
+            }
+        });
+
+        if (lewat && (durasi.value === '3' || durasi.value === '6')) {
+            durasi.value = '1';
+        }
+    }
+
+    aturDurasi();
+    document.getElementById('jam').addEventListener('change', aturDurasi);
 </script>
 @endsection
