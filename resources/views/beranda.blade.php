@@ -25,7 +25,13 @@
                 </h1>
 
                 <p class="mt-5 text-[#5C4A3A] leading-relaxed max-w-md">
-                    Pesan sepeda online, bayar digital, dan pantau status pesanan secara real-time.
+                    Alamat: 
+                    <span>Jl.Ahmad Yani (samping ruko sepakat 1), Pontianak, Kalimantan Barat.</span>
+                    <br>
+                    <span>Buka Senin-Jumat 08.00-23.30 WIB</span>
+                    <span>Sabtu-Minggu 06.00-23.30 WIB</span>
+                    <span>Telepon:+ 62 838-6991-5909</span>
+                
                 </p>
 
                 <a href="{{ route('katalog.index') }}"
