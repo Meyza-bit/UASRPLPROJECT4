@@ -26,7 +26,6 @@
 
                 <p class="mt-5 text-[#5C4A3A] leading-relaxed max-w-md">
                     Pesan sepeda online, bayar digital, dan pantau status pesanan secara real-time.
-                    Tidak perlu ke Toko.
                 </p>
 
                 <a href="{{ route('katalog.index') }}"
@@ -48,7 +47,6 @@
             @php
                 $statistik = [
                     ['nilai' => $totalUnit, 'label' => 'UNIT SEPEDA TERSEDIA', 'emas' => true],
-                    ['nilai' => '4.8 ★',    'label' => 'RATING PENGGUNA',      'emas' => true],
                     ['nilai' => '24/7',     'label' => 'LAYANAN PELANGGAN',    'emas' => false],
                     ['nilai' => '100%',     'label' => 'PEMBAYARAN DIGITAL',   'emas' => false],
                 ];
