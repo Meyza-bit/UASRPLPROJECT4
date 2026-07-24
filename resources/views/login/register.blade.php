@@ -8,8 +8,8 @@
 
         {{-- Logo & judul --}}
         <div class="text-center">
-            <div class="w-20 h-20 mx-auto rounded-full bg-[#FDFBF5] border-[3px] border-[#7B1E1E] flex items-center justify-center">
-                <span class="text-[#7B1E1E] text-[10px] font-bold leading-tight text-center">CULTURE<br>BIKE</span>
+            <div class="w-20 h-20 mx-auto rounded-full bg-[#FDFBF5] border-[3px] border-[#7B1E1E] flex items-center justify-center overflow-hidden">
+                <img src="{{ asset('images/logo.png') }}" alt="Culture Bike" class="w-full h-full object-cover">
             </div>
             <h1 class="mt-4 text-3xl font-medium text-[#7B1E1E]">Culture Bike</h1>
             <p class="mt-2 text-sm text-[#5C4A3A] max-w-sm mx-auto">
