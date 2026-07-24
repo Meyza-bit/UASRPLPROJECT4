@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\PesananMasukController;
 use App\Http\Controllers\Admin\PengembalianController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Admin\RiwayatController as AdminRiwayatController;
 use App\Http\Controllers\KatalogServisController;
 
 Route::get('/', [BerandaController::class, 'index'])->name('beranda');
@@ -102,4 +103,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
+
+    Route::get('/riwayat', [AdminRiwayatController::class, 'index'])->name('riwayat.index');
 });
