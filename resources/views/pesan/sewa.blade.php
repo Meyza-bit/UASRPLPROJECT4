@@ -59,10 +59,10 @@
                     <div class="bg-white rounded-2xl overflow-hidden {{ $item->tersedia ? '' : 'opacity-60' }}">
 
                         {{-- Foto --}}
-                        <div class="h-40 bg-[#EDE4D2] flex items-center justify-center">
+                        <div class="h-56 bg-[#EDE4D2] flex items-center justify-center">
                             @if ($item->foto)
                                 <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama }}"
-                                     class="w-full h-full object-cover">
+                                     class="w-full h-full object-contain">
                             @else
                                 <span class="text-[#B9A88F] text-xs">Belum ada foto</span>
                             @endif
@@ -260,7 +260,31 @@
             document.getElementById('form-jadwal').submit();
         });
     });
-    
+
+    // Kalau jam mulai di atas 22.30, opsi 3 & 6 jam dimatikan
+    function aturDurasi() {
+        const jam    = document.getElementById('jam').value;
+        const durasi = document.getElementById('durasi');
+        if (!jam) return;
+
+        const [j, m] = jam.split(':').map(Number);
+        const menit  = j * 60 + m;
+        const lewat  = menit > (22 * 60 + 30);
+
+        Array.from(durasi.options).forEach(function (opt) {
+            if (opt.value === '3' || opt.value === '6') {
+                opt.disabled = lewat;
+            }
+        });
+
+        if (lewat && (durasi.value === '3' || durasi.value === '6')) {
+            durasi.value = '1';
+        }
+    }
+
+    aturDurasi();
+    document.getElementById('jam').addEventListener('change', aturDurasi);
+
     // Kalau jam mulai di atas 22.30, opsi 3 & 6 jam dimatikan
     function aturDurasi() {
         const jam    = document.getElementById('jam').value;

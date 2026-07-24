@@ -49,9 +49,9 @@
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
         @forelse ($unit as $item)
             <div class="bg-white rounded-2xl overflow-hidden">
-                <div class="relative h-24 bg-[#EDE4D2] flex items-center justify-center">
+                <div class="relative h-56 bg-[#EDE4D2] flex items-center justify-center">
                     @if ($item->foto)
-                        <img src="{{ asset('storage/' . $item->foto) }}" class="w-full h-full object-cover">
+                        <img src="{{ asset('storage/' . $item->foto) }}" class="w-full h-full object-contain">
                     @else
                         <span class="text-[#B9A88F] text-xs">Belum ada foto</span>
                     @endif
