@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pembayaran;
 use App\Models\Penyewaan;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Facades\DB;
 
 class RiwayatController extends Controller
 {
@@ -13,6 +14,9 @@ class RiwayatController extends Controller
      */
     public function index()
     {
+        // Bersihkan dulu pesanan yang batas bayarnya sudah lewat
+        $this->bersihkanPesananKadaluarsa();
+
         $riwayat = Penyewaan::with('detail.sepeda')
             ->where('user_id', auth()->id())
             ->latest()
@@ -39,5 +43,34 @@ class RiwayatController extends Controller
             ->first();
 
         return view('riwayat.show', compact('penyewaan', 'pembayaran'));
+    }
+
+    /**
+     * Batalkan semua pesanan milik user ini yang batas bayarnya sudah lewat.
+     * Stok dikembalikan supaya bisa disewa orang lain.
+     */
+    private function bersihkanPesananKadaluarsa(): void
+    {
+        $pesanan = Penyewaan::with('detail.sepeda')
+            ->where('user_id', auth()->id())
+            ->where('status', 'menunggu_pembayaran')
+            ->get();
+
+        foreach ($pesanan as $p) {
+            $pembayaran = Pembayaran::sewa()->where('pesanan_id', $p->id)->first();
+
+            if (! $pembayaran || ! $pembayaran->kadaluarsa) {
+                continue;
+            }
+
+            DB::transaction(function () use ($p, $pembayaran) {
+                foreach ($p->detail as $item) {
+                    $item->sepeda->increment('stok', $item->qty);
+                }
+
+                $p->update(['status' => 'batal']);
+                $pembayaran->delete();
+            });
+        }
     }
 }

@@ -16,10 +16,15 @@ class PembayaranController extends Controller
      * Halaman pembayaran sebuah pesanan sewa.
      */
     public function show(Penyewaan $penyewaan)
-    {
-        $this->pastikanMilikSendiri($penyewaan);
+{
+    $this->pastikanMilikSendiri($penyewaan);
 
-        // Kalau sudah lunas, langsung arahkan ke halaman berhasil
+    // Kalau batas waktu sudah lewat, pesanan hangus
+    if ($this->batalkanKalauKadaluarsa($penyewaan)) {
+        return redirect()
+            ->route('riwayat.index')
+            ->with('sukses', "Pesanan {$penyewaan->kode} dibatalkan karena melewati batas waktu pembayaran.");
+    }
         if (in_array($penyewaan->status, ['aktif', 'selesai'])) {
             return redirect()->route('pembayaran.berhasil', $penyewaan);
         }
@@ -36,7 +41,7 @@ class PembayaranController extends Controller
                 'metode_bayar' => 'QRIS / Transfer Bank',
                 'jumlah'       => $penyewaan->total,
                 'status'       => 'menunggu',
-                'batas_waktu'  => $penyewaan->created_at->addDay(),   // 24 jam sejak pesanan dibuat
+                'batas_waktu'  => $penyewaan->created_at->addMinutes(3),   // 24 jam sejak pesanan dibuat
             ]
         );
 
@@ -219,9 +224,34 @@ class PembayaranController extends Controller
     }
 
     /**
-     * Pastikan pesanan ini memang milik user yang sedang login.
-     * Tanpa ini, orang bisa membuka pembayaran orang lain hanya dengan mengubah angka di URL.
+     * Batalkan pesanan kalau batas waktu bayar sudah lewat.
+     * Stok dikembalikan supaya bisa disewa orang lain.
      */
+    private function batalkanKalauKadaluarsa(Penyewaan $penyewaan): bool
+    {
+        // Cuma pesanan yang belum dibayar yang bisa hangus
+        if ($penyewaan->status !== 'menunggu_pembayaran') {
+            return false;
+        }
+
+        $pembayaran = Pembayaran::sewa()->where('pesanan_id', $penyewaan->id)->first();
+
+        // Belum ada data pembayaran berarti belum mulai hitung mundur
+        if (! $pembayaran || ! $pembayaran->kadaluarsa) {
+            return false;
+        }
+
+        DB::transaction(function () use ($penyewaan, $pembayaran) {
+            foreach ($penyewaan->detail as $item) {
+                $item->sepeda->increment('stok', $item->qty);
+            }
+
+            $penyewaan->update(['status' => 'batal']);
+            $pembayaran->delete();
+        });
+
+        return true;
+    }
     private function pastikanMilikSendiri(Penyewaan $penyewaan): void
     {
         if ($penyewaan->user_id !== auth()->id()) {
