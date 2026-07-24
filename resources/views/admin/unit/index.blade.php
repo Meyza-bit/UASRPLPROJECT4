@@ -49,7 +49,7 @@
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
         @forelse ($unit as $item)
             <div class="bg-white rounded-2xl overflow-hidden">
-                <div class="relative h-36 bg-[#EDE4D2] flex items-center justify-center">
+                <div class="relative h-24 bg-[#EDE4D2] flex items-center justify-center">
                     @if ($item->foto)
                         <img src="{{ asset('storage/' . $item->foto) }}" class="w-full h-full object-cover">
                     @else

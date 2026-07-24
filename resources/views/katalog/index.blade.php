@@ -41,7 +41,7 @@
             <div class="bg-[#FDF8ED] rounded-2xl p-4 mb-4 flex flex-col sm:flex-row sm:items-center gap-5">
 
                 {{-- Foto --}}
-                <div class="w-full sm:w-32 h-28 rounded-xl overflow-hidden bg-[#EDE4D2] shrink-0">
+                <div class="w-full sm:w-44 h-26 rounded-xl overflow-hidden bg-white shrink-0">
                     @if ($item->foto)
                         <img src="{{ asset('storage/' . $item->foto) }}"
                              alt="{{ $item->nama }}"
