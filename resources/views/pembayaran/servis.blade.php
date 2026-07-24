@@ -95,13 +95,12 @@
             <h2 class="text-lg font-bold text-[#7B1E1E]">Pembayaran</h2>
 
             {{-- QRIS --}}
+            {{-- QRIS --}}
             <div class="mt-6 flex flex-col items-center">
-                <div class="w-48 h-48 bg-[#F5F0E4] rounded-lg flex items-center justify-center">
-                    {{-- Ganti dengan QRIS asli:
-                         <img src="{{ asset('images/qris.png') }}" alt="QRIS Culture Bike" class="w-full h-full object-contain"> --}}
-                    <span class="text-[#B9A88F] text-xs text-center px-4">Kode QRIS<br>belum dipasang</span>
+                <div class="w-48 h-48 bg-[#F5F0E4] rounded-lg flex items-center justify-center overflow-hidden">
+                    <img src="{{ asset('images/qris.png') }}" alt="QRIS Culture Bike" class="w-full h-full object-cover scale-125">
                 </div>
-                <p class="mt-3 text-xs text-[#8A7B6B]">Scan QRIS untuk pembayaran instan</p>
+            <p class="mt-3 text-xs text-[#8A7B6B]">Scan QRIS untuk pembayaran instan</p>
             </div>
 
             {{-- Hitung mundur --}}

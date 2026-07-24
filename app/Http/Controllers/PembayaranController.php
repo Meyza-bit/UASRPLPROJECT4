@@ -155,7 +155,7 @@ class PembayaranController extends Controller
                 'metode_bayar' => 'QRIS',
                 'jumlah'       => $pesananServis->total_pembayaran,
                 'status'       => 'menunggu',
-                'batas_waktu'  => $pesananServis->created_at->addDay(),
+                'batas_waktu'  => $pesananServis->created_at->addMinutes(3),
             ]
         );
 
